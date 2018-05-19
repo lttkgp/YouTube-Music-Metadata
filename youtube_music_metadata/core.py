@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 
+from addons.spotify import search_sp
+from addons.musixmatch import search_mm
+
 REQUESTS_SESSION = requests.Session()
 
 def youtube_attached_metadata(song_link):
@@ -25,7 +28,9 @@ def youtube_attached_metadata(song_link):
 
 def get_metadata(song_link, spotify=False, musixmatch=False):
     yt_data = youtube_attached_metadata(song_link)
-    print(yt_data)
+    sp_data = search_sp(yt_data['song'] + " - " + yt_data['album'])
+    mm_data = search_mm(yt_data['song'] + " - " + yt_data['album'])
+    return [yt_data, sp_data, mm_data]
 
 if __name__ == "__main__":
     song_link = "https://www.youtube.com/watch?v=zwHF2y2ceSc&feature=share"
