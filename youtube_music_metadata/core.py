@@ -1,8 +1,14 @@
 from bs4 import BeautifulSoup
 import requests
+from youtube_title_parse import get_artist_title
+import argparse
 
-from youtube_music_metadata.addons.spotify import search_sp
-from youtube_music_metadata.addons.musixmatch import search_mm
+try:
+    from youtube_music_metadata.addons.spotify import search_sp
+    from youtube_music_metadata.addons.musixmatch import search_mm
+except ModuleNotFoundError:
+    from addons.spotify import search_sp
+    from addons.musixmatch import search_mm
 
 REQUESTS_SESSION = requests.Session()
 
@@ -29,14 +35,37 @@ def get_youtube_metadata(song_link):
 def get_metadata(song_link, spotify=False, musixmatch=False):
     metadata = {}
     yt_data = get_youtube_metadata(song_link)
-    sp_data = search_sp(yt_data['song'] + " - " + yt_data['album'])
-    mm_data = search_mm(yt_data['song'] + " - " + yt_data['album'])
+    clean_title = get_artist_title(yt_data['title'])
     metadata['youtube'] = yt_data
-    metadata['spotify'] = sp_data
-    metadata['musixmatch'] = mm_data
+    if 'artist' not in yt_data:
+        if spotify == True:
+            sp_data = search_sp(clean_title)
+            metadata['spotify'] = sp_data
+        if musixmatch == True:
+            mm_data = search_mm(clean_title)
+            metadata['musixmatch'] = mm_data
+    elif 'artist' in yt_data and 'song' not in yt_data:
+        if spotify == True:
+            sp_data = search_sp(yt_data['artist'] + " " + clean_title)
+            metadata['spotify'] = sp_data
+        if musixmatch == True:
+            mm_data = search_mm(yt_data['artist'] + " " + clean_title)
+            metadata['musixmatch'] = mm_data
+    else:
+        if spotify == True:
+            sp_data = search_sp(yt_data['song'] + " - " + yt_data['artist'])
+            metadata['spotify'] = sp_data
+        if musixmatch == True:
+            mm_data = search_mm(yt_data['song'] + " - " + yt_data['artist'])
+            metadata['musixmatch'] = mm_data
     return metadata
 
 if __name__ == "__main__":
-    song_link = "https://www.youtube.com/watch?v=zwHF2y2ceSc&feature=share"
-    metadata = get_metadata(song_link)
+    argparser = argparse.ArgumentParser(
+        description='youtube_music_metadata', formatter_class=argparse.RawTextHelpFormatter)
+    argparser.add_argument(
+        "youtube_link", type=str, help='required youtube video link')
+    args = argparser.parse_args()
+    song_link = args.youtube_link
+    metadata = get_metadata(song_link, spotify=True, musixmatch=True)
     print(metadata)
