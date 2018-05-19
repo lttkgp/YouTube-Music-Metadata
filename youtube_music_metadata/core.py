@@ -1,3 +1,4 @@
+from __future__ import print_function, absolute_import
 from bs4 import BeautifulSoup
 import requests
 from youtube_title_parse import get_artist_title
