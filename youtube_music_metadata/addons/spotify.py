@@ -2,13 +2,8 @@
 Spotify setup
 """
 import os
-from os.path import abspath, dirname, join
 import spotipy
 import spotipy.util as spotipy_util
-from dotenv import load_dotenv
-
-DOTENV_PATH = join(dirname(dirname(dirname(abspath(__file__)))), '.env')
-load_dotenv(DOTENV_PATH)
 
 SPOTIFY_CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET")

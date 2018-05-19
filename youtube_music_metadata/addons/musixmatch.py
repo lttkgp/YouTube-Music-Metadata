@@ -2,12 +2,7 @@
 Musixmatch setup
 """
 import os
-from os.path import abspath, dirname, join
-from dotenv import load_dotenv
 import requests
-
-DOTENV_PATH = join(dirname(dirname(dirname(abspath(__file__)))), '.env')
-load_dotenv(DOTENV_PATH)
 
 REQ_SESSION = requests.Session()
 MUSIXMATCH_BASE_URL = "http://api.musixmatch.com/ws/1.1/"
