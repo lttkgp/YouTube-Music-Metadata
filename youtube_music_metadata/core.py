@@ -60,7 +60,7 @@ def get_metadata(song_link, spotify=False, musixmatch=False):
             metadata['musixmatch'] = mm_data
     return metadata
 
-if __name__ == "__main__":
+def main():
     argparser = argparse.ArgumentParser(
         description='youtube_music_metadata', formatter_class=argparse.RawTextHelpFormatter)
     argparser.add_argument(
@@ -69,3 +69,6 @@ if __name__ == "__main__":
     song_link = args.youtube_link
     metadata = get_metadata(song_link, spotify=True, musixmatch=True)
     print(metadata)
+
+if __name__ == "__main__":
+    main()
