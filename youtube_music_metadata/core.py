@@ -35,6 +35,11 @@ def get_youtube_metadata(song_link):
 
 def get_metadata(song_link, spotify=False, musixmatch=False):
     metadata = {}
+    if 'youtube.com' not in song_link and 'youtu.be' not in song_link:
+        metadata['youtube'] = {}
+        metadata['spotify'] = {}
+        metadata['musixmatch'] = {}
+        return metadata
     yt_data = get_youtube_metadata(song_link)
     clean_title = get_artist_title(yt_data['title'])
     metadata['youtube'] = yt_data
