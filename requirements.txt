@@ -11,4 +11,4 @@ idna==2.8                 # via requests
 requests==2.21.0
 soupsieve==1.9            # via beautifulsoup4
 spotipy==2.4.4
-urllib3==1.24.1           # via requests
+urllib3==1.24.2           # via requests
